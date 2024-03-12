@@ -21,8 +21,6 @@ function myFunction(textToCopy) {
   alert("Copied the text: " + textToCopy);
 }
 
-
-
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -41,10 +39,9 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
 
   const problems = useGetProblems(setLoadingProblems);
   const solvedProblems = useGetSolvedProblems();
-  console.log("solvedProblems", solvedProblems);
   const closeModal = () => {
     setYoutubePlayer({ isOpen: false, videoId: "" });
-    setTextSolution({isOpen: false, textId: ""})
+    setTextSolution({ isOpen: false, textId: "" });
   };
 
   useEffect(() => {
@@ -115,32 +112,25 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                 )}
               </td>
 
-               {/* textsolution */}
+              {/* textsolution */}
 
-               <td className={"px-6 py-4"}>
+              <td className={"px-6 py-4"}>
                 {problem.textId ? (
-                 <p  onClick={() =>
-                  setTextSolution({
-                    isOpen: true,
-                    textId: problem.textId as string,
-                  })
-                } > Click here </p>
-                   
-                       
-                
-                
-                
-                 ) : (
+                  <p
+                    onClick={() =>
+                      setTextSolution({
+                        isOpen: true,
+                        textId: problem.textId as string,
+                      })
+                    }
+                  >
+                    {" "}
+                    Click here{" "}
+                  </p>
+                ) : (
                   <p className="text-gray-400">Coming soon</p>
                 )}
               </td>
-
-
-
-
-
-
-
             </tr>
           );
         })}
@@ -164,7 +154,6 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                   loading="lazy"
                   iframeClassName="w-full min-h-[500px]"
                 />
-                
               </div>
             </div>
           </div>
@@ -185,63 +174,64 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                   className="cursor-pointer absolute -top-16 right-0"
                   onClick={closeModal}
                 />
-               
-               <div className="" style={{}}>
-  <nav className="" style={{
-    display: 'flex',
-    justifyContent: 'space-between',
-    height: '70px',
-    backgroundColor: '#393e46',
-    borderTopLeftRadius: '10px',
-    borderTopRightRadius: '10px',
-    alignItems: 'center',
-    color: '#ff9a3c',
-    padding: '0 20px', // Added padding for better spacing
-    fontFamily:'monospace' ,
-    fontSize:'19px',
-    fontWeight:'bold'
-  }}>
-    Solution
-    <button
-    style={{
-    border: "2px solid black",
-    height: "30px",
-    width: "80px",
-    color: "black",
-    borderRadius: "5px",
-    backgroundColor: "#ff9a3c",
-  }}
-  onClick={() => myFunction(textSolution.textId)}
->
-  Copy?
-</button>
-  </nav>
 
-  <div className="" id="forCopy" style={{
-    height: '200px',
-    backgroundColor: '#222831',
-    overflowY: 'scroll',
-    scrollbarColor: 'unset',
-    scrollbarWidth: 'auto',
-    borderBottomLeftRadius: '10px',
-    borderBottomRightRadius: '10px',
-    padding: '10px', // Added padding for better spacing
-    color:"white" 
-  }}>
-    {textSolution.textId}
-  </div>
-</div>
+                <div className="" style={{}}>
+                  <nav
+                    className=""
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      height: "70px",
+                      backgroundColor: "#393e46",
+                      borderTopLeftRadius: "10px",
+                      borderTopRightRadius: "10px",
+                      alignItems: "center",
+                      color: "#ff9a3c",
+                      padding: "0 20px", // Added padding for better spacing
+                      fontFamily: "monospace",
+                      fontSize: "19px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Solution
+                    <button
+                      style={{
+                        border: "2px solid black",
+                        height: "30px",
+                        width: "80px",
+                        color: "black",
+                        borderRadius: "5px",
+                        backgroundColor: "#ff9a3c",
+                      }}
+                      onClick={() => myFunction(textSolution.textId)}
+                    >
+                      Copy?
+                    </button>
+                  </nav>
 
-                
+                  <div
+                    className=""
+                    id="forCopy"
+                    style={{
+                      height: "200px",
+                      backgroundColor: "#222831",
+                      overflowY: "scroll",
+                      scrollbarColor: "unset",
+                      scrollbarWidth: "auto",
+                      borderBottomLeftRadius: "10px",
+                      borderBottomRightRadius: "10px",
+                      padding: "10px", // Added padding for better spacing
+                      color: "white",
+                    }}
+                  >
+                    {textSolution.textId}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </tfoot>
       )}
-
-   
-
-
     </>
   );
 };
@@ -291,9 +281,6 @@ function useGetSolvedProblems() {
     if (user) getSolvedProblems();
     if (!user) setSolvedProblems([]);
   }, [user]);
-
-
-  
 
   return solvedProblems;
 }

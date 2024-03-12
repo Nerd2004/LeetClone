@@ -1,3 +1,4 @@
+import { problems } from './../problems/index';
 export type Example = {
 	id: number;
 	inputText: string;
@@ -5,7 +6,10 @@ export type Example = {
 	explanation?: string;
 	img?: string;
 };
-
+export type Standings = {
+	user:string;
+	time:number;
+};
 // local problem data
 export type Problem = {
 	id: string;
@@ -31,4 +35,15 @@ export type DBProblem = {
 	videoId?: string;
 	link?: string;
 	textId: string;
+	timestamp:number;
+};
+
+export type contests = {
+	id: string;
+	problems:string[];
+	standings:string[];
+	score:number[];
+	count:number[];
+	starttime:number;
+	endtime:number;
 };
