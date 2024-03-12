@@ -7,34 +7,35 @@ import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 
 export default function Home() {
-  //   const [inputs, setInputs] = useState({
-  //     id: "",
-  //     title: "",
-  //     difficulty: "",
-  //     category: "",
-  //     videoId: "",
-  //     link: "",
-  //     order: 0,
-  //     likes: 0,
-  //     dislikes: 0,
+  // const [inputs, setInputs] = useState({
+  //   id: "",
+  //   title: "",
+  //   difficulty: "",
+  //   category: "",
+  //   videoId: "",
+  //   link: "",
+  //   order: 0,
+  //   likes: 0,
+  //   dislikes: 0,
+  // });
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputs({
+  //     ...inputs,
+  //     [e.target.name]: e.target.value,
   //   });
+  // };
 
-  //   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //     setInputs({
-  //       ...inputs,
-  //       [e.target.name]: e.target.value,
-  //     });
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const newProblem = {
+  //     ...inputs,
+  //     order: Number(inputs.order),
   //   };
+  //   await setDoc(doc(firestore, "problems", inputs.id), newProblem);
+  //   alert("Saved to DB");
+  // };
 
-  //   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     const newProblem = {
-  //       ...inputs,
-  //       order: Number(inputs.order),
-  //     };
-  //     await setDoc(doc(firestore, "problems", inputs.id), newProblem);
-  //     alert("Saved to DB");
-  //   };
   const [loadingProblems, setLoadingProblems] = useState(true);
   const hasMounted = useHasMounted();
 
