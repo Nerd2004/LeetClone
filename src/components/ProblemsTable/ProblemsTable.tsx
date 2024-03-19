@@ -21,7 +21,12 @@ function myFunction(textToCopy) {
   alert("Copied the text: " + textToCopy);
 }
 
-
+function parseSolutionString(solutionString) {
+    const lines = solutionString.trim().split('\n');
+    const filteredLines = lines.filter(line => line.trim() !== '').map(line => line.trim());
+    const formattedSolution = filteredLines.map(line => '  ' + line).join('\n');
+    return `function twoSum(nums, target) {\n${formattedSolution}\n}`;
+}
 
 type ProblemsTableProps = {
   setLoadingProblems: React.Dispatch<React.SetStateAction<boolean>>;
@@ -34,18 +39,31 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
     isOpen: false,
     videoId: "",
   });
-  const [textSolution, setTextSolution] = useState({
-    isOpen: false,
-    textId: "",
-  });
+  const [textSolutions, setTextSolutions] = useState({});
 
   const problems = useGetProblems(setLoadingProblems);
   const solvedProblems = useGetSolvedProblems();
-  console.log("solvedProblems", solvedProblems);
+
   const closeModal = () => {
     setYoutubePlayer({ isOpen: false, videoId: "" });
-    setTextSolution({isOpen: false, textId: ""})
+    setTextSolutions({});
   };
+
+  useEffect(() => {
+    const fetchSolutions = async () => {
+      const solutions = {};
+      for (const problem of problems) {
+        const docRef = doc(firestore, 'solutions', problem.textId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          solutions[problem.textId] = docSnap.data().solution;
+        }
+      }
+      setTextSolutions(solutions);
+    };
+
+    fetchSolutions();
+  }, [problems]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -115,31 +133,20 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                 )}
               </td>
 
-               {/* textsolution */}
+              {/* textsolution */}
 
-               <td className={"px-6 py-4"}>
+              <td className={"px-6 py-4"}>
                 {problem.textId ? (
-                 <p  onClick={() =>
-                  setTextSolution({
-                    isOpen: true,
-                    textId: problem.textId as string,
-                  })
-                } > Click here </p>
-                   
-                       
-                
-                
-                
-                 ) : (
+                  <p onClick={() =>
+                    setTextSolutions({
+                      isOpen: true,
+                      textId: textSolutions[problem.textId],
+                    })
+                  }> Click here </p>
+                ) : (
                   <p className="text-gray-400">Coming soon</p>
                 )}
               </td>
-
-
-
-
-
-
 
             </tr>
           );
@@ -164,14 +171,13 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
                   loading="lazy"
                   iframeClassName="w-full min-h-[500px]"
                 />
-                
               </div>
             </div>
           </div>
         </tfoot>
       )}
       {/* //text textSolution */}
-      {textSolution.isOpen && (
+      {textSolutions.isOpen && (
         <tfoot className="fixed top-0 left-0 h-screen w-screen flex items-center justify-center">
           <div
             className="bg-black z-10 opacity-70 top-0 left-0 w-screen h-screen absolute"
@@ -211,7 +217,7 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
     borderRadius: "5px",
     backgroundColor: "#ff9a3c",
   }}
-  onClick={() => myFunction(textSolution.textId)}
+  onClick={() => myFunction(textSolutions.textId)}
 >
   Copy?
 </button>
@@ -228,19 +234,15 @@ const ProblemsTable: React.FC<ProblemsTableProps> = ({
     padding: '10px', // Added padding for better spacing
     color:"white" 
   }}>
-    {textSolution.textId}
+    {textSolutions.textId}
   </div>
 </div>
 
-                
               </div>
             </div>
           </div>
         </tfoot>
       )}
-
-   
-
 
     </>
   );
@@ -254,7 +256,6 @@ function useGetProblems(
 
   useEffect(() => {
     const getProblems = async () => {
-      // fetching data logic
       setLoadingProblems(true);
       const q = query(
         collection(firestore, "problems"),
@@ -291,9 +292,6 @@ function useGetSolvedProblems() {
     if (user) getSolvedProblems();
     if (!user) setSolvedProblems([]);
   }, [user]);
-
-
-  
 
   return solvedProblems;
 }
